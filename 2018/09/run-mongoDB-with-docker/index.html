@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>利用 Docker 运行 MongoDB | Div-wang</title><meta name="keywords" content="Docker,MongoDB"><meta name="author" content="Div"><meta name="copyright" content="Div"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在服务器上安装MongoDB很是繁琐，而通过 Docker 运行 MongoDB很是方便，数据迁移也变得更加简单，日常的运维和使用与本地安装基本没有区别。   ### Docker系列文章 [Linux 安装 Docker](&#x2F;2018&#x2F;05&#x2F;linux-install-docker-ce.html) [使用Docker Gogs搭建git服务](&#x2F;2018&#x2F;05&#x2F;build-git-serve">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用 Docker 运行 MongoDB">
+<meta property="og:url" content="https://blog.div-wang.com/2018/09/run-mongoDB-with-docker/index.html">
+<meta property="og:site_name" content="Div-wang">
+<meta property="og:description" content="在服务器上安装MongoDB很是繁琐，而通过 Docker 运行 MongoDB很是方便，数据迁移也变得更加简单，日常的运维和使用与本地安装基本没有区别。   ### Docker系列文章 [Linux 安装 Docker](&#x2F;2018&#x2F;05&#x2F;linux-install-docker-ce.html) [使用Docker Gogs搭建git服务](&#x2F;2018&#x2F;05&#x2F;build-git-serve">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://div-1255800596.cos.ap-beijing.myqcloud.com/img/index/20211015161535.png">
+<meta property="article:published_time" content="2018-09-04T09:12:07.000Z">
+<meta property="article:modified_time" content="2018-09-04T09:12:07.000Z">
+<meta property="article:author" content="Div">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="MongoDB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://div-1255800596.cos.ap-beijing.myqcloud.com/img/index/20211015161535.png"><link rel="shortcut icon" href="https://div-1255800596.cos.ap-beijing.myqcloud.com/logo.png"><link rel="canonical" href="https://blog.div-wang.com/2018/09/run-mongoDB-with-docker/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '利用 Docker 运行 MongoDB',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2018-09-04 17:12:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://div-1255800596.cos.ap-beijing.myqcloud.com/logo.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">83</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于Div</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://div-1255800596.cos.ap-beijing.myqcloud.com/img/index/20211015161535.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Div-wang</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于Div</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">利用 Docker 运行 MongoDB</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-09-04T09:12:07.000Z" title="发表于 2018-09-04 17:12:07">2018-09-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2018-09-04T09:12:07.000Z" title="更新于 2018-09-04 17:12:07">2018-09-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="利用 Docker 运行 MongoDB"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>在服务器上安装MongoDB很是繁琐，而通过 Docker 运行 MongoDB很是方便，数据迁移也变得更加简单，日常的运维和使用与本地安装基本没有区别。</p>
+</blockquote>
+<div class="nav-list">
+### Docker系列文章
+[Linux 安装 Docker](/2018/05/linux-install-docker-ce.html)
+[使用Docker Gogs搭建git服务](/2018/05/build-git-server-using-gogs-docker-image.html)
+[利用 Docker 运行 MongoDB](/2018/05/run-mongoDB-with-docker.html)
+</div>
+---
+
+<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>安装docker，参考文章<a href="/2018/05/linux-install-docker-ce.html">Linux 安装 Docker</a></p>
+<h3 id="查找官方镜像"><a href="#查找官方镜像" class="headerlink" title="查找官方镜像"></a>查找官方镜像</h3><p>查找Docker Hub上的 mongo 镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">sudo docker search mongo</span><br><span class="line">NAME                                DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED</span><br><span class="line">mongo                               MongoDB document databases provide high avai…   4916                [OK]</span><br><span class="line">mongo-express                       Web-based MongoDB admin interface, written w…   288                 [OK]</span><br><span class="line">tutum/mongodb                       MongoDB Docker image – listens <span class="keyword">in</span> port 27017…   224                                     [OK]</span><br><span class="line">mvertes/alpine-mongo                light MongoDB container                         79                                      [OK]</span><br><span class="line">mongoclient/mongoclient             Official docker image <span class="keyword">for</span> Mongoclient, featu…   54                                      [OK]</span><br><span class="line">bitnami/mongodb                     Bitnami MongoDB Docker Image                    46                                      [OK]</span><br><span class="line">frodenas/mongodb                    A Docker Image <span class="keyword">for</span> MongoDB                      17                                      [OK]</span><br><span class="line">mongooseim/mongooseim               Small docker image <span class="keyword">for</span> MongooseIM - robust a…   16</span><br><span class="line">mongooseim/mongooseim-docker        MongooseIM server the latest stable version     11                                      [OK]</span><br><span class="line">cvallance/mongo-k8s-sidecar         Kubernetes side car to setup and maintain a …   8                                       [OK]</span><br><span class="line">centos/mongodb-26-centos7           MongoDB NoSQL database server                   5</span><br><span class="line">centos/mongodb-32-centos7           MongoDB NoSQL database server                   5</span><br><span class="line">istepanov/mongodump                 Docker image with mongodump running as a cro…   5                                       [OK]</span><br><span class="line">eses/mongodb_exporter               mongodb exporter <span class="keyword">for</span> prometheus                 4                                       [OK]</span><br><span class="line">khezen/mongo                        MongoDB Docker image supporting RocksDB stor…   4                                       [OK]</span><br><span class="line">neowaylabs/mongodb-mms-agent        This Docker image with MongoDB Monitoring Ag…   2                                       [OK]</span><br><span class="line">centos/mongodb-36-centos7           MongoDB NoSQL database server                   2</span><br><span class="line">centos/mongodb-34-centos7           MongoDB NoSQL database server                   1</span><br><span class="line">openshift/mongodb-24-centos7        DEPRECATED: A Centos7 based MongoDB v2.4 ima…   1</span><br><span class="line">ekesken/mongo                       docker image <span class="keyword">for</span> mongo that is configurable …   1                                       [OK]</span><br><span class="line">webhippie/mongodb                   Docker images <span class="keyword">for</span> mongodb                       1                                       [OK]</span><br><span class="line">circleci/mongo                      CircleCI images <span class="keyword">for</span> MongoDB                     1                                       [OK]</span><br><span class="line">amd64/mongo                         MongoDB document databases provide high avai…   0</span><br><span class="line">quilt/mongo                         MongoDB container <span class="keyword">for</span> quilt.io                  0                                       [OK]</span><br><span class="line">ansibleplaybookbundle/mongodb-apb   An APB to deploy MongoDB.                       0                                       [OK]</span><br></pre></td></tr></table></figure>
+<p>这里我们拉取官方的最新镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mongo</span><br></pre></td></tr></table></figure>
+<p>等待下载完成后，我们就可以在本地镜像列表里查到REPOSITORY为mongo的镜像。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">mongo               latest              a41c82c0998a        11 days ago         380MB</span><br></pre></td></tr></table></figure>
+<h3 id="运行-mongo-镜像"><a href="#运行-mongo-镜像" class="headerlink" title="运行 mongo 镜像"></a>运行 mongo 镜像</h3><p><a target="_blank" rel="noopener" href="https://hub.docker.com/_/mongo/">mongo镜像官方文档</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mongo -p 27017:27017 -v /data/db:/data/db -d mongo --auth</span><br></pre></td></tr></table></figure>
+<p><code>—-name</code> 指定镜像的名字，如果不指定会使用 Docker 镜像 ID。<br><code>-p 27018:27017</code> 官方的 mongo 镜像默认端口是27017，我们将它映射到主机的端口上27018。 27018端口可自定义，但是不能是在使用的接口。<br><code>-v /data/db:/data/db</code> -v 是挂载路径，将 mongo 镜像里的目录挂载到本地目录，mongo 镜像默认目录是/data/db。<br><code>-d</code> 在后台运行。<br><code>—auth</code> 以 auth 模式运行 mongo。</p>
+<p>然后执行一下 docker ps 确认一下库已经正常运行起来。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CONTAINER ID    IMAGE      COMMAND                  CREATED        STATUS        PORTS                      NAMES</span><br><span class="line">20e0be4e4a7e    mongo      <span class="string">&quot;docker-entrypoint.s…&quot;</span>   7 days ago     Up 7 days     0.0.0.0:20188-&gt;27017/tcp   mongo</span><br></pre></td></tr></table></figure>
+
+<h3 id="连接-mongo-镜像"><a href="#连接-mongo-镜像" class="headerlink" title="连接 mongo 镜像"></a>连接 mongo 镜像</h3><p>使用 <code>docker exec</code> 命令连接 mongo 镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it mongo /bin/bash</span><br></pre></td></tr></table></figure>
+<p>更多的请看文档-<a target="_blank" rel="noopener" href="http://www.runoob.com/docker/docker-exec-command.html">Docker exec 命令</a></p>
+<h3 id="创建用户和数据库"><a href="#创建用户和数据库" class="headerlink" title="创建用户和数据库"></a>创建用户和数据库</h3><p>1、 切换到admin数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br></pre></td></tr></table></figure>
+
+<p>2、创建管理员账户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.createUser(&#123; user: <span class="string">&#x27;admin&#x27;</span>, <span class="built_in">pwd</span>: <span class="string">&#x27;admin_password&#x27;</span>, roles: [ &#123; role: <span class="string">&quot;userAdminAnyDatabase&quot;</span>, db: <span class="string">&quot;admin&quot;</span> &#125; ] &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>3、为创建的管理员账户进行授权</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.auth(<span class="string">&quot;admin&quot;</span>,<span class="string">&quot;admin_password&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>4、切换到指定数据库（如不存在会自动创建，默认是没有数据的，执行<code>show dbs</code>并不会显示出来）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<p>5、创建test库下的用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.createUser(&#123; user: <span class="string">&#x27;test&#x27;</span>, <span class="built_in">pwd</span>: <span class="string">&#x27;test_password&#x27;</span>, roles: [&#123; role: <span class="string">&quot;readWrite&quot;</span>, db: <span class="string">&quot;test&quot;</span> &#125;] &#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="链接数据库"><a href="#链接数据库" class="headerlink" title="链接数据库"></a>链接数据库</h3><p>shell链接数据库:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongo 127.0.0.1:27018/<span class="built_in">test</span> -u <span class="built_in">test</span> -p test_password</span><br></pre></td></tr></table></figure>
+
+<p>标准 URI 连接语法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongodb://<span class="built_in">test</span>:test_password@127.0.0.1:27018/<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h3><p><a target="_blank" rel="noopener" href="http://www.runoob.com/docker/docker-install-mongodb.html">Docker 安装 MongoDB</a><br><a target="_blank" rel="noopener" href="http://www.runoob.com/mongodb/mongodb-connections.html">MongoDB - 连接</a><br><a target="_blank" rel="noopener" href="https://hub.docker.com/_/mongo/">mongo镜像官方文档</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Div</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.div-wang.com/2018/09/run-mongoDB-with-docker/">https://blog.div-wang.com/2018/09/run-mongoDB-with-docker/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.div-wang.com" target="_blank">Div-wang</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Docker/">Docker</a><a class="post-meta__tags" href="/tags/MongoDB/">MongoDB</a></div><div class="post_share"><div class="social-share" data-image="https://div-1255800596.cos.ap-beijing.myqcloud.com/img/index/20211015161535.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2018/10/use-acme-website-https/"><img class="prev-cover" src="https://div-1255800596.cos.ap-beijing.myqcloud.com/img/index/20211015161535.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">利用acme.sh实现网站https</div></div></a></div><div class="next-post pull-right"><a href="/2018/09/build-git-server-using-gogs-docker-image/"><img class="next-cover" src="https://div-1255800596.cos.ap-beijing.myqcloud.com/img/index/20211015161535.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">使用Gogs Docker镜像配置git服务器</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/09/linux-install-docker-ce/" title="Linux 安装 Docker"><img class="cover" src="https://div-1255800596.cos.ap-beijing.myqcloud.com/img/index/20211015161535.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-09-04</div><div class="title">Linux 安装 Docker</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E5%AE%98%E6%96%B9%E9%95%9C%E5%83%8F"><span class="toc-number">2.</span> <span class="toc-text">查找官方镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C-mongo-%E9%95%9C%E5%83%8F"><span class="toc-number">3.</span> <span class="toc-text">运行 mongo 镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5-mongo-%E9%95%9C%E5%83%8F"><span class="toc-number">4.</span> <span class="toc-text">连接 mongo 镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B7%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">5.</span> <span class="toc-text">创建用户和数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">6.</span> <span class="toc-text">链接数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="toc-number">7.</span> <span class="toc-text">参考资源</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2021 By Div</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
