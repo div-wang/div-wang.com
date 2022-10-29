@@ -1,0 +1,386 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>vim常用操作命令 | Div-wang</title><meta name="keywords" content="Linux,vim"><meta name="author" content="Div"><meta name="copyright" content="Div"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="vim常用操作命令 vi 是 unix&#x2F;linux 下极为普遍的一种文本编辑器. 记录一些比较常用的命令  一般模式   命令 操作详情    x,X x为向后删除一个字符，X为先前删除一个字符   nx 向后删除n个字符   dd 删除当前行   D 删除当前行所有字符，试成为空行   ndd 删除光标所在行的向下n列   d1G 删除光标所在行到第一行的所有数据   dG 删除光标所在行到最后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vim常用操作命令">
+<meta property="og:url" content="https://blog.div-wang.com/2017/10/vim-common-commands/index.html">
+<meta property="og:site_name" content="Div-wang">
+<meta property="og:description" content="vim常用操作命令 vi 是 unix&#x2F;linux 下极为普遍的一种文本编辑器. 记录一些比较常用的命令  一般模式   命令 操作详情    x,X x为向后删除一个字符，X为先前删除一个字符   nx 向后删除n个字符   dd 删除当前行   D 删除当前行所有字符，试成为空行   ndd 删除光标所在行的向下n列   d1G 删除光标所在行到第一行的所有数据   dG 删除光标所在行到最后">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.div-wang.com/static/img/common/bg3.jpeg">
+<meta property="article:published_time" content="2017-10-27T06:18:42.000Z">
+<meta property="article:modified_time" content="2017-10-27T06:18:42.000Z">
+<meta property="article:author" content="Div">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="vim">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.div-wang.com/static/img/common/bg3.jpeg"><link rel="shortcut icon" href="/static/img/logo.png"><link rel="canonical" href="https://blog.div-wang.com/2017/10/vim-common-commands/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'vim常用操作命令',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2017-10-27 14:18:42'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/static/img/logo.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">49</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">86</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于Div</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://blog.div-wang.com/static/img/common/bg3.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Div-wang</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于Div</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">vim常用操作命令</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-10-27T06:18:42.000Z" title="发表于 2017-10-27 14:18:42">2017-10-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2017-10-27T06:18:42.000Z" title="更新于 2017-10-27 14:18:42">2017-10-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/Linux/">Linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="vim常用操作命令"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="vim常用操作命令"><a href="#vim常用操作命令" class="headerlink" title="vim常用操作命令"></a>vim常用操作命令</h1><blockquote>
+<p>vi 是 unix/linux 下极为普遍的一种文本编辑器. 记录一些比较常用的命令</p>
+</blockquote>
+<h2 id="一般模式"><a href="#一般模式" class="headerlink" title="一般模式"></a>一般模式</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>操作详情</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>x,X</code></td>
+<td><code>x</code>为向后删除一个字符，<code>X</code>为先前删除一个字符</td>
+</tr>
+<tr>
+<td><code>nx</code></td>
+<td>向后删除n个字符</td>
+</tr>
+<tr>
+<td><code>dd</code></td>
+<td>删除当前行</td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td>删除当前行所有字符，试成为空行</td>
+</tr>
+<tr>
+<td><code>ndd</code></td>
+<td>删除光标所在行的向下<code>n</code>列</td>
+</tr>
+<tr>
+<td><code>d1G</code></td>
+<td>删除光标所在行到第一行的所有数据</td>
+</tr>
+<tr>
+<td><code>dG</code></td>
+<td>删除光标所在行到最后一行的所有数据</td>
+</tr>
+<tr>
+<td><code>yy</code></td>
+<td>复制光标所在行</td>
+</tr>
+<tr>
+<td><code>y1G</code></td>
+<td>复制光标所在行到第一行的所有数据</td>
+</tr>
+<tr>
+<td><code>yG</code></td>
+<td>复制光标所在行到最后一行的所有数据</td>
+</tr>
+<tr>
+<td><code>ynj</code></td>
+<td>复制光标所在行向下<code>n+1</code>行</td>
+</tr>
+<tr>
+<td><code>dnj</code></td>
+<td>删除光标所在行向下<code>n+1</code>行</td>
+</tr>
+<tr>
+<td><code>p,P</code></td>
+<td><code>p</code>为复制的数据粘贴在光标的下一行，<code>P</code>为复制的数据粘贴在光标的上一行</td>
+</tr>
+<tr>
+<td><code>J</code></td>
+<td>将光标所在行与下一行的数据结合成一行</td>
+</tr>
+<tr>
+<td><code>u</code></td>
+<td>命令取消最近一次的操作，可以使用多次来恢复原有的操作</td>
+</tr>
+<tr>
+<td><code>U</code></td>
+<td>取消所有操作</td>
+</tr>
+<tr>
+<td><code>h</code></td>
+<td>光标向左移一个字符</td>
+</tr>
+<tr>
+<td><code>j</code></td>
+<td>光标向下移一个字符</td>
+</tr>
+<tr>
+<td><code>k</code></td>
+<td>光标向上移一个字符</td>
+</tr>
+<tr>
+<td><code>l</code></td>
+<td>光标向右移一个字符</td>
+</tr>
+<tr>
+<td><code>Ctrl+f</code></td>
+<td>屏幕向下翻一页</td>
+</tr>
+<tr>
+<td><code>Ctrl+b</code></td>
+<td>屏幕向上翻一页</td>
+</tr>
+<tr>
+<td><code>Ctrl+d</code></td>
+<td>屏幕向下翻半页</td>
+</tr>
+<tr>
+<td><code>Ctrl+u</code></td>
+<td>屏幕向上翻半页</td>
+</tr>
+<tr>
+<td><code>0</code></td>
+<td>光标移动到当前行的第一个字符</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>光标移动到当前行的最后一个字符</td>
+</tr>
+<tr>
+<td><code>H</code></td>
+<td>光标移动到当前屏幕最上方的那一行的第一个非空字符</td>
+</tr>
+<tr>
+<td><code>M</code></td>
+<td>光标移动到当前屏幕最中间那一行的第一个非空字符</td>
+</tr>
+<tr>
+<td><code>L</code></td>
+<td>光标移动到当前屏幕最下方的那一行的第一个非空字符</td>
+</tr>
+<tr>
+<td><code>GG</code></td>
+<td>光标移动到该文章第一行的第一个非空字符</td>
+</tr>
+<tr>
+<td><code>G</code></td>
+<td>光标移动到该文章最后一行的第一个非空字符</td>
+</tr>
+<tr>
+<td><code>nG</code></td>
+<td>光标移动到该文章第n行的第一个非空字符</td>
+</tr>
+<tr>
+<td><code>/word</code></td>
+<td>在光标之后查找word字符串</td>
+</tr>
+<tr>
+<td><code>?word</code></td>
+<td>在光标之前查找word字符串</td>
+</tr>
+</tbody></table>
+<h2 id="末行模式"><a href="#末行模式" class="headerlink" title="末行模式"></a>末行模式</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>操作详情</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>:s/word1/word2/g</code></td>
+<td>在光标当前行查找word1，并替换成word2</td>
+</tr>
+<tr>
+<td><code>:n1,n2s/word1/word2/g</code></td>
+<td>在第n1行与第n2行之间查找word1，并替换成word2</td>
+</tr>
+<tr>
+<td><code>:%s/word1/word2/g</code></td>
+<td>整个文章查找word1，并替换成word2</td>
+</tr>
+<tr>
+<td><code>:w</code></td>
+<td>将编辑的数据保存到硬盘文件中</td>
+</tr>
+<tr>
+<td><code>:w [filename]</code></td>
+<td>将编辑后的数据保存到硬盘的另一个文件中</td>
+</tr>
+<tr>
+<td><code>:r [filename]</code></td>
+<td>在编辑数据时，读入另一个文件中的数据，即将filename文件中的内容加到光标所在行下一行</td>
+</tr>
+<tr>
+<td><code>:wq或:x</code></td>
+<td>保存并退出</td>
+</tr>
+<tr>
+<td><code>:q</code></td>
+<td>退出，适用于未修改的文件</td>
+</tr>
+<tr>
+<td><code>:q!</code></td>
+<td>强制退出，适用于修改文件后不保存退出</td>
+</tr>
+<tr>
+<td><code>:set nu</code></td>
+<td>显示行号</td>
+</tr>
+<tr>
+<td><code>:set nonu</code></td>
+<td>取消行号</td>
+</tr>
+<tr>
+<td><code>:n1,n2 w [filename]</code></td>
+<td>将n1到n2行的内容保存到名为filename的文件中</td>
+</tr>
+</tbody></table>
+<h2 id="编辑模式命令"><a href="#编辑模式命令" class="headerlink" title="编辑模式命令"></a>编辑模式命令</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>操作详情</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>i,I</code></td>
+<td><code>i</code>为在当前光标所在处插入输入的文字，<code>I</code>为在光标所在行第一个非空字符插入输入的文字</td>
+</tr>
+<tr>
+<td><code>a,A</code></td>
+<td><code>a</code>为在当前光标所在处下一个字符插入输入的文字，<code>A</code>为在光标所在行最后一个字符的下一个字符处插入输入的文字</td>
+</tr>
+<tr>
+<td><code>o,O</code></td>
+<td><code>o</code>为在光标所在行的下一行行首开始插入字符，<code>O</code>为在光标所在行的上一行行首开始插入字符</td>
+</tr>
+<tr>
+<td><code>r,R</code></td>
+<td><code>r</code>为替换光标所在那一个字符，<code>R</code>为一直替换光标所指的文字，直到退出</td>
+</tr>
+<tr>
+<td><code>Esc</code></td>
+<td>退出，回到一般模式</td>
+</tr>
+</tbody></table>
+<h2 id="js命令说明"><a href="#js命令说明" class="headerlink" title="js命令说明"></a>js命令说明</h2><blockquote>
+<p>ctrl+s是一个古老的shell控制键，在输入ctrl+q就可以恢复了</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// First Level</span></span><br><span class="line">i → Insert mode. Type ESC to <span class="keyword">return</span> to Normal mode.</span><br><span class="line">x → Delete the char under the cursor</span><br><span class="line">:wq → Save and Quit (:w save, :q quit)</span><br><span class="line">dd → Delete (and copy) the current line</span><br><span class="line">p → Paste</span><br><span class="line"><span class="attr">Recommended</span>:</span><br><span class="line"></span><br><span class="line">hjkl (highly recommended but not mandatory) → basic cursor move (←↓↑→). Hint: j looks like a down arrow.</span><br><span class="line">:help &lt;command&gt; → Show help about &lt;command&gt;. You can use :help without a &lt;command&gt; to get general help.</span><br><span class="line"></span><br><span class="line"><span class="comment">// Second Level</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*** Insert mode variations: ***/</span></span><br><span class="line"></span><br><span class="line">a → insert after the cursor</span><br><span class="line">o → insert a <span class="keyword">new</span> line after the current one</span><br><span class="line">O → insert a <span class="keyword">new</span> line before the current one</span><br><span class="line">cw → replace <span class="keyword">from</span> the cursor to the end <span class="keyword">of</span> the word</span><br><span class="line"></span><br><span class="line"><span class="comment">/*** Basic moves ***/</span></span><br><span class="line"><span class="number">0</span> → go to the first column(number zero)</span><br><span class="line">^ → go to the first non-blank character <span class="keyword">of</span> the line</span><br><span class="line">$ → go to the end <span class="keyword">of</span> line</span><br><span class="line">g_ → go to the last non-blank character <span class="keyword">of</span> line</span><br><span class="line">/pattern → search <span class="keyword">for</span> pattern</span><br><span class="line"></span><br><span class="line"><span class="comment">/*** Copy/Paste ***/</span></span><br><span class="line">P → paste before, remember p is paste after current position.</span><br><span class="line">yy → copy the current line, easier but equivalent to ddP</span><br><span class="line"></span><br><span class="line"><span class="comment">/*** Undo/Redo ***/</span></span><br><span class="line">u → undo</span><br><span class="line">&lt;C-r&gt; → redo</span><br><span class="line"></span><br><span class="line"><span class="comment">/*** Load/Save/Quit/Change File (Buffer) ***/</span></span><br><span class="line">:e &lt;path/to/file&gt; → open</span><br><span class="line">:w → save</span><br><span class="line">:saveas &lt;path/to/file&gt; → save to &lt;path/to/file&gt;</span><br><span class="line">:x, ZZ or :wq → save and quit (:x only save <span class="keyword">if</span> necessary)</span><br><span class="line">:q! → quit without saving, <span class="attr">also</span>: :qa! to quit even <span class="keyword">if</span> there are modified hidden buffers.</span><br><span class="line">:bn (resp. :bp) → show next (resp. previous) file (buffer)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3rd Level – Better. Stronger. Faster.</span></span><br><span class="line"><span class="comment">/*** Vim Command (normal Model)-help you to repeat ***/</span></span><br><span class="line">2dd → will <span class="keyword">delete</span> <span class="number">2</span> lines</span><br><span class="line">3p → will paste the text <span class="number">3</span> times</span><br><span class="line">100idesu [ESC] → will write “desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu desu”</span><br><span class="line">. → Just after the last command will write again the <span class="number">100</span> “desu”.</span><br><span class="line"><span class="number">3.</span> → Will write <span class="number">3</span> “desu” (and not <span class="number">300</span>, how clever).</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*** Vim Command (normal Model)-how to move efficiently with vim ***/</span></span><br><span class="line">NG → Go to line N</span><br><span class="line">gg → shortcut <span class="keyword">for</span> 1G - go to the start <span class="keyword">of</span> the file</span><br><span class="line">G → Go to last line</span><br><span class="line"></span><br><span class="line"><span class="comment">/*** Vim Command (normal Model)-how to move word move efficiently with vim ***/</span></span><br><span class="line"></span><br><span class="line">w → go to the start <span class="keyword">of</span> the following word,</span><br><span class="line">e → go to the end <span class="keyword">of</span> <span class="built_in">this</span> word.</span><br><span class="line">By <span class="keyword">default</span>, words are composed <span class="keyword">of</span> letters and the underscore character. Let’s call a WORD a group <span class="keyword">of</span> letter separated by blank characters. If you want to consider WORDS, then just use uppercase characters:</span><br><span class="line"></span><br><span class="line">W → go to the start <span class="keyword">of</span> the following WORD,</span><br><span class="line">E → go to the end <span class="keyword">of</span> <span class="built_in">this</span> WORD.</span><br><span class="line"></span><br><span class="line"><span class="comment">/*** /Pattern find Next by #(*) or find ( then % to next ) ***/</span></span><br><span class="line">% : Go to the corresponding (, &#123;, [.</span><br><span class="line">* (resp. #) : go to next (resp. previous) occurrence <span class="keyword">of</span> the word under the cursor</span><br><span class="line"></span><br><span class="line"><span class="comment">/*** &lt;start position&gt;&lt;command&gt;&lt;end position&gt; ***/</span></span><br><span class="line"></span><br><span class="line">For example : 0y$ means</span><br><span class="line"></span><br><span class="line"><span class="number">0</span> → go to the beginning <span class="keyword">of</span> <span class="built_in">this</span> line</span><br><span class="line">y → yank <span class="keyword">from</span> here</span><br><span class="line">$ → up to the end <span class="keyword">of</span> <span class="built_in">this</span> line</span><br><span class="line"></span><br><span class="line"><span class="comment">// Tip with postition-comand-position</span></span><br><span class="line">But what was <span class="literal">true</span> <span class="keyword">for</span> y (yank), is also <span class="literal">true</span> <span class="keyword">for</span> d (<span class="keyword">delete</span>), v (visual select), gU (uppercase), gu (lowercase), etc…</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Div</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.div-wang.com/2017/10/vim-common-commands/">https://blog.div-wang.com/2017/10/vim-common-commands/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.div-wang.com" target="_blank">Div-wang</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a><a class="post-meta__tags" href="/tags/vim/">vim</a></div><div class="post_share"><div class="social-share" data-image="https://blog.div-wang.com/static/img/common/bg3.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/10/learning-initiative/"><img class="prev-cover" src="https://blog.div-wang.com/static/img/common/bg3.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">关于工作和学习的主动性</div></div></a></div><div class="next-post pull-right"><a href="/2017/10/git-remote-branch/"><img class="next-cover" src="https://blog.div-wang.com/static/img/common/bg3.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">关于Git远程分支和本地分支统一的问题</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/09/linux-install-docker-ce/" title="Linux 安装 Docker"><img class="cover" src="https://blog.div-wang.com/static/img/common/bg3.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-09-04</div><div class="title">Linux 安装 Docker</div></div></a></div><div><a href="/2018/03/linux-user-guide/" title="Linux下用户操作指南"><img class="cover" src="https://blog.div-wang.com/static/img/common/bg3.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-07</div><div class="title">Linux下用户操作指南</div></div></a></div><div><a href="/2017/04/ubuntu-apt-get-install-nodejs/" title="ubuntu下apt-get安装nodejs"><img class="cover" src="https://blog.div-wang.com/static/img/common/bg3.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-04-13</div><div class="title">ubuntu下apt-get安装nodejs</div></div></a></div><div><a href="/2017/10/ubuntu-boot-automatically-starts/" title="ubuntu 开机自动启动"><img class="cover" src="https://blog.div-wang.com/static/img/ubuntu-boot/002.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-10-27</div><div class="title">ubuntu 开机自动启动</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#vim%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">vim常用操作命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E8%88%AC%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">一般模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AB%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">末行模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E6%A8%A1%E5%BC%8F%E5%91%BD%E4%BB%A4"><span class="toc-number">1.3.</span> <span class="toc-text">编辑模式命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#js%E5%91%BD%E4%BB%A4%E8%AF%B4%E6%98%8E"><span class="toc-number">1.4.</span> <span class="toc-text">js命令说明</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2022 By Div</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

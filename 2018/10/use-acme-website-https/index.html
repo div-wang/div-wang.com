@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>利用acme.sh实现网站https | Div-wang</title><meta name="keywords" content="acme.sh,https,域名,证书"><meta name="author" content="Div"><meta name="copyright" content="Div"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="利用acme.sh实现网站https acme.sh 实现了 acme 协议, 可以从 letsencrypt 生成免费的证书, 配置和管理相当方便.  1. 安装 acme.sh安装很简单, 一条命令搞定: 1curl  https:&#x2F;&#x2F;get.acme.sh | sh  sh 文件将 acme.sh 安装目录在 ~&#x2F;.acme.sh&#x2F; 下, 创建 一个 acme.sh&#x3D;~&#x2F;.acme.sh&#x2F;a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用acme.sh实现网站https">
+<meta property="og:url" content="https://blog.div-wang.com/2018/10/use-acme-website-https/index.html">
+<meta property="og:site_name" content="Div-wang">
+<meta property="og:description" content="利用acme.sh实现网站https acme.sh 实现了 acme 协议, 可以从 letsencrypt 生成免费的证书, 配置和管理相当方便.  1. 安装 acme.sh安装很简单, 一条命令搞定: 1curl  https:&#x2F;&#x2F;get.acme.sh | sh  sh 文件将 acme.sh 安装目录在 ~&#x2F;.acme.sh&#x2F; 下, 创建 一个 acme.sh&#x3D;~&#x2F;.acme.sh&#x2F;a">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.div-wang.com/static/img/common/bg3.jpeg">
+<meta property="article:published_time" content="2018-10-08T03:28:44.000Z">
+<meta property="article:modified_time" content="2018-10-08T03:28:44.000Z">
+<meta property="article:author" content="Div">
+<meta property="article:tag" content="acme.sh">
+<meta property="article:tag" content="https">
+<meta property="article:tag" content="域名">
+<meta property="article:tag" content="证书">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.div-wang.com/static/img/common/bg3.jpeg"><link rel="shortcut icon" href="/static/img/logo.png"><link rel="canonical" href="https://blog.div-wang.com/2018/10/use-acme-website-https/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '利用acme.sh实现网站https',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2018-10-08 11:28:44'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/static/img/logo.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">49</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">86</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于Div</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://blog.div-wang.com/static/img/common/bg3.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Div-wang</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于Div</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">利用acme.sh实现网站https</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-10-08T03:28:44.000Z" title="发表于 2018-10-08 11:28:44">2018-10-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2018-10-08T03:28:44.000Z" title="更新于 2018-10-08 11:28:44">2018-10-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/http/">http</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="利用acme.sh实现网站https"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="利用acme-sh实现网站https"><a href="#利用acme-sh实现网站https" class="headerlink" title="利用acme.sh实现网站https"></a>利用acme.sh实现网站https</h1><blockquote>
+<p><strong>acme.sh</strong> 实现了 <code>acme</code> 协议, 可以从 letsencrypt 生成免费的证书, 配置和管理相当方便.</p>
+</blockquote>
+<h2 id="1-安装-acme-sh"><a href="#1-安装-acme-sh" class="headerlink" title="1. 安装 acme.sh"></a>1. 安装 <strong>acme.sh</strong></h2><p>安装很简单, 一条命令搞定:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl  https://get.acme.sh | sh</span><br></pre></td></tr></table></figure>
+
+<p>sh 文件将 <strong>acme.sh</strong> 安装目录在 <code>~/.acme.sh/</code> 下, 创建 一个 <code>acme.sh=~/.acme.sh/acme.sh</code> 的 alias, 方便你的使用, 再自动为你创建一个 job,  每天 0:00 点自动检测所有的证书, 如果快过期了, 需要更新, 则会自动更新证书.</p>
+<p>** 所有的修改都限制在安装目录中: <code>~/.acme.sh/</code>, 安装不会写入其他文件**</p>
+<h2 id="2-生成证书"><a href="#2-生成证书" class="headerlink" title="2. 生成证书"></a>2. 生成证书</h2><p><strong>acme.sh</strong> 实现了 <strong>acme</strong> 协议支持的所有验证协议, 一般有两种方式验证: http 和 dns 验证.</p>
+<h3 id="2-1-http-方式"><a href="#2-1-http-方式" class="headerlink" title="2-1. http 方式."></a>2-1. http 方式.</h3><p>http 方式也根据使用服务不同为以下几种</p>
+<h4 id="2-1-1-正常-http-验证"><a href="#2-1-1-正常-http-验证" class="headerlink" title="2-1-1. 正常 http 验证"></a>2-1-1. 正常 http 验证</h4><p>只需要指定域名, 并指定域名所在的网站根目录. <strong>acme.sh</strong> 会全自动的生成验证文件, 并放到网站的根目录, 自动完成验证会删除验证文件.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">acme.sh  --issue  -d mydomain.com -d www.mydomain.com  --webroot  /home/wwwroot/mydomain.com/</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-1-2-apache服务器验证"><a href="#2-1-2-apache服务器验证" class="headerlink" title="2-1-2. apache服务器验证"></a>2-1-2. <strong>apache</strong>服务器验证</h4><p>如果你用的 <strong>apache</strong>服务器, <strong>acme.sh</strong> 还可以智能的从 <strong>apache</strong>的配置中自动完成验证, 你不需要指定网站根目录:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo acme.sh --issue  -d mydomain.com   --apache</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-1-3-nginx服务器验证"><a href="#2-1-3-nginx服务器验证" class="headerlink" title="2-1-3. nginx服务器验证"></a>2-1-3. <strong>nginx</strong>服务器验证</h4><p>如果你用的 <strong>nginx</strong>服务器, 或者反代, <strong>acme.sh</strong> 还可以智能的从 <strong>nginx</strong>的配置中自动完成验证, 你不需要指定网站根目录:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo acme.sh --issue  -d mydomain.com   --nginx</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意, 无论是 apache 还是 nginx 模式, acme.sh会生成一个 config 文件, 并备份你的 nginx.config, 所以这里一般会用到 sudo, 验证完成acme.sh会自动回复你的 nginx.config</strong></p>
+<h4 id="2-1-4-独立服务模式-–standalone"><a href="#2-1-4-独立服务模式-–standalone" class="headerlink" title="2-1-4.独立服务模式 –standalone"></a>2-1-4.独立服务模式 <strong>–standalone</strong></h4><p>在 <strong>acme.sh</strong> 安装过程中会有一个 warning 提示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[Tue Nov  7 09:17:19 UTC 2017] It is recommended to install socat first.</span><br><span class="line">[Tue Nov  7 09:17:19 UTC 2017] We use socat for standalone server if you use standalone mode.</span><br><span class="line">[Tue Nov  7 09:17:19 UTC 2017] If you don&#x27;t use standalone mode, just ignore this warning.</span><br></pre></td></tr></table></figure>
+
+<p><code>-- standalone</code>是用来启动独立服务端的, 也就是你没有任何web 服务, <strong>acme.sh</strong> 可以启动一个webserver, 监听 <strong>80</strong> 端口, 完成验证</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">acme.sh --issue --standalone -d mydomain.com</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-DNS-方式"><a href="#2-2-DNS-方式" class="headerlink" title="2-2.DNS 方式"></a>2-2.DNS 方式</h3><p>DNS 方式就是在域名上添加一条 txt 解析记录, 验证域名所有权, 分为自动和手动.</p>
+<h4 id="2-2-1-自动-DNS-解析"><a href="#2-2-1-自动-DNS-解析" class="headerlink" title="2-2-1.自动 DNS 解析"></a>2-2-1.自动 DNS 解析</h4><p>DNS 方式的真正强大之处在于可以使用域名解析商提供的 api 自动添加 txt 记录完成验证.</p>
+<p><strong>acme.sh</strong> 目前支持 30 多种解析商的自动集成.</p>
+<p>详细的 api 用法: <a target="_blank" rel="noopener" href="https://github.com/Neilpang/acme.sh/blob/master/dnsapi/README.md">How to use DNS API</a></p>
+<h4 id="2-2-2-手动-DNS-解析"><a href="#2-2-2-手动-DNS-解析" class="headerlink" title="2-2-2.手动 DNS 解析"></a>2-2-2.手动 DNS 解析</h4><p>执行以下命令, <strong>acme.sh</strong> 会生成相应的解析记录显示出来, 你只需要在你的域名管理面板中添加这条 txt 记录即可.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">acme.sh --issue --dns -d mydomain.com</span><br></pre></td></tr></table></figure>
+
+<p>等待解析完成之后, 使用<code>--renew</code>命令重新生成证书:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">acme.sh --renew -d mydomain.com</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-多级子域名支持"><a href="#2-3-多级子域名支持" class="headerlink" title="2-3. 多级子域名支持"></a>2-3. 多级子域名支持</h3><p><strong>acme.sh</strong>对于多个域名或子域名的支持相当方便, 在执行命令后加上你所有的域名, 例如:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">acme.sh --issue --dns dns_ali -d mydomain.com -d *.mydomain.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-copy-安装-证书"><a href="#3-copy-安装-证书" class="headerlink" title="3. copy/安装 证书"></a>3. copy/安装 证书</h2><p>默认生成的证书都放在安装目录下: <code>~/.acme.sh/</code>,  官方不建议直接使用此目录下的文件, 推荐使用 <code>--installcert</code> 命令, 指定目标位置, 然后自己配置目录:</p>
+<h4 id="Apache-example"><a href="#Apache-example" class="headerlink" title="Apache example:"></a>Apache example:</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">acme.sh --install-cert -d example.com \</span><br><span class="line">--cert-file      /path/to/certfile/in/apache/cert.pem  \</span><br><span class="line">--key-file       /path/to/keyfile/in/apache/key.pem  \</span><br><span class="line">--fullchain-file /path/to/fullchain/certfile/apache/fullchain.pem \</span><br><span class="line">--reloadcmd     &quot;service apache2 force-reload&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Nginx-example"><a href="#Nginx-example" class="headerlink" title="Nginx example:"></a>Nginx example:</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">acme.sh --install-cert -d example.com \</span><br><span class="line">--key-file       /path/to/keyfile/in/nginx/key.pem  \</span><br><span class="line">--fullchain-file /path/to/fullchain/nginx/cert.pem \</span><br><span class="line">--reloadcmd     &quot;service nginx force-reload&quot;</span><br></pre></td></tr></table></figure>
+
+<p>这里指定的所有参数都会被自动记录下来, 并在将来证书自动更新以后, 被再次自动调用.</p>
+<p>详细参数请参考: <a target="_blank" rel="noopener" href="https://github.com/Neilpang/acme.sh#3-install-the-issued-cert-to-apachenginx-etc">Install the issued cert to Apache/Nginx etc.</a></p>
+<h2 id="4-更新"><a href="#4-更新" class="headerlink" title="4. 更新"></a>4. 更新</h2><h3 id="4-1-证书更新"><a href="#4-1-证书更新" class="headerlink" title="4-1. 证书更新"></a>4-1. 证书更新</h3><p>目前证书在 60 天以后会自动更新, 你无需任何操作. 今后有可能会缩短这个时间, 不过都是自动的, 你不用关心.</p>
+<p>如果您想强制更新，执行一下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># RSA</span><br><span class="line">$ acme.sh --renew -d example.com --force</span><br><span class="line"></span><br><span class="line"># ECC</span><br><span class="line">acme.sh --renew -d example.com --force --ecc</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-acme-sh-更新"><a href="#4-2-acme-sh-更新" class="headerlink" title="4-2. acme.sh 更新"></a>4-2. acme.sh 更新</h3><p>升级 acme.sh 到最新版 :</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">acme.sh --upgrade</span><br></pre></td></tr></table></figure>
+
+<p>开启自动升级:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">acme.sh  --upgrade  --auto-upgrade</span><br></pre></td></tr></table></figure>
+
+<p>关闭自动更新:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">acme.sh --upgrade  --auto-upgrade  0</span><br></pre></td></tr></table></figure>
+
+<p>更多命令，请在终端执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">acme.sh</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://github.com/Neilpang/acme.sh/wiki/%E8%AF%B4%E6%98%8E">中文说明</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Neilpang/acme.sh/wiki">Wiki Home</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Neilpang/acme.sh">An ACME Shell script: acme.sh</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.racksam.com/2016/12/26/centos-nginx-setup-lets-encrypt-with-acme-sh/">使用acme.sh脚本的DNS API方式申请及更新let’s encrypt证书</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Div</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.div-wang.com/2018/10/use-acme-website-https/">https://blog.div-wang.com/2018/10/use-acme-website-https/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.div-wang.com" target="_blank">Div-wang</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/acme-sh/">acme.sh</a><a class="post-meta__tags" href="/tags/https/">https</a><a class="post-meta__tags" href="/tags/%E5%9F%9F%E5%90%8D/">域名</a><a class="post-meta__tags" href="/tags/%E8%AF%81%E4%B9%A6/">证书</a></div><div class="post_share"><div class="social-share" data-image="https://blog.div-wang.com/static/img/common/bg3.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/09/element-upload-component-to-qiniu/"><img class="prev-cover" src="https://blog.div-wang.com/static/img/common/bg3.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">使用element-ui的upload组件上传到七牛云</div></div></a></div><div class="next-post pull-right"><a href="/2018/09/run-mongoDB-with-docker/"><img class="next-cover" src="https://blog.div-wang.com/static/img/common/bg3.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">利用 Docker 运行 MongoDB</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%A9%E7%94%A8acme-sh%E5%AE%9E%E7%8E%B0%E7%BD%91%E7%AB%99https"><span class="toc-number">1.</span> <span class="toc-text">利用acme.sh实现网站https</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-acme-sh"><span class="toc-number">1.1.</span> <span class="toc-text">1. 安装 acme.sh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%94%9F%E6%88%90%E8%AF%81%E4%B9%A6"><span class="toc-number">1.2.</span> <span class="toc-text">2. 生成证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-http-%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.1.</span> <span class="toc-text">2-1. http 方式.</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-1-%E6%AD%A3%E5%B8%B8-http-%E9%AA%8C%E8%AF%81"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">2-1-1. 正常 http 验证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-apache%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">2-1-2. apache服务器验证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-3-nginx%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%AA%8C%E8%AF%81"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">2-1-3. nginx服务器验证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-4-%E7%8B%AC%E7%AB%8B%E6%9C%8D%E5%8A%A1%E6%A8%A1%E5%BC%8F-%E2%80%93standalone"><span class="toc-number">1.2.1.4.</span> <span class="toc-text">2-1-4.独立服务模式 –standalone</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-DNS-%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.2.</span> <span class="toc-text">2-2.DNS 方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E8%87%AA%E5%8A%A8-DNS-%E8%A7%A3%E6%9E%90"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">2-2-1.自动 DNS 解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-%E6%89%8B%E5%8A%A8-DNS-%E8%A7%A3%E6%9E%90"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">2-2-2.手动 DNS 解析</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%A4%9A%E7%BA%A7%E5%AD%90%E5%9F%9F%E5%90%8D%E6%94%AF%E6%8C%81"><span class="toc-number">1.2.3.</span> <span class="toc-text">2-3. 多级子域名支持</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-copy-%E5%AE%89%E8%A3%85-%E8%AF%81%E4%B9%A6"><span class="toc-number">1.3.</span> <span class="toc-text">3. copy&#x2F;安装 证书</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Apache-example"><span class="toc-number">1.3.0.1.</span> <span class="toc-text">Apache example:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nginx-example"><span class="toc-number">1.3.0.2.</span> <span class="toc-text">Nginx example:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%9B%B4%E6%96%B0"><span class="toc-number">1.4.</span> <span class="toc-text">4. 更新</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E8%AF%81%E4%B9%A6%E6%9B%B4%E6%96%B0"><span class="toc-number">1.4.1.</span> <span class="toc-text">4-1. 证书更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-acme-sh-%E6%9B%B4%E6%96%B0"><span class="toc-number">1.4.2.</span> <span class="toc-text">4-2. acme.sh 更新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">1.5.</span> <span class="toc-text">参考</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2022 By Div</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

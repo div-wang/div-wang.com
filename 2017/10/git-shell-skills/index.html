@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>git shell 技巧 | Div-wang</title><meta name="keywords" content="git,cli,shell"><meta name="author" content="Div"><meta name="copyright" content="Div"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="git shell 技巧 git作为常用的代码管理工具，有些shell脚本可以大大提高使用git的效率，本文主要介绍一下我常用的一些shell技巧。  git shell 自动补全如果你用的是 Bash shell，可以试试看 Git 提供的自动补全脚本 git的源代码包里有个自动补全的shell脚本：contrib&#x2F;completion／git-completion.bash 把这个文件保存到~">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git shell 技巧">
+<meta property="og:url" content="https://blog.div-wang.com/2017/10/git-shell-skills/index.html">
+<meta property="og:site_name" content="Div-wang">
+<meta property="og:description" content="git shell 技巧 git作为常用的代码管理工具，有些shell脚本可以大大提高使用git的效率，本文主要介绍一下我常用的一些shell技巧。  git shell 自动补全如果你用的是 Bash shell，可以试试看 Git 提供的自动补全脚本 git的源代码包里有个自动补全的shell脚本：contrib&#x2F;completion／git-completion.bash 把这个文件保存到~">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.div-wang.com/static/img/common/bg3.jpeg">
+<meta property="article:published_time" content="2017-10-27T06:03:45.000Z">
+<meta property="article:modified_time" content="2017-10-27T06:03:45.000Z">
+<meta property="article:author" content="Div">
+<meta property="article:tag" content="git">
+<meta property="article:tag" content="cli">
+<meta property="article:tag" content="shell">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.div-wang.com/static/img/common/bg3.jpeg"><link rel="shortcut icon" href="/static/img/logo.png"><link rel="canonical" href="https://blog.div-wang.com/2017/10/git-shell-skills/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'git shell 技巧',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2017-10-27 14:03:45'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/static/img/logo.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">49</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">86</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">15</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于Div</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://blog.div-wang.com/static/img/common/bg3.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Div-wang</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于Div</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">git shell 技巧</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-10-27T06:03:45.000Z" title="发表于 2017-10-27 14:03:45">2017-10-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2017-10-27T06:03:45.000Z" title="更新于 2017-10-27 14:03:45">2017-10-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/git/">git</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="git shell 技巧"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="git-shell-技巧"><a href="#git-shell-技巧" class="headerlink" title="git shell 技巧"></a>git shell 技巧</h1><blockquote>
+<p>git作为常用的代码管理工具，有些shell脚本可以大大提高使用git的效率，本文主要介绍一下我常用的一些shell技巧。</p>
+</blockquote>
+<h2 id="git-shell-自动补全"><a href="#git-shell-自动补全" class="headerlink" title="git shell 自动补全"></a>git shell 自动补全</h2><h5 id="如果你用的是-Bash-shell，可以试试看-Git-提供的自动补全脚本"><a href="#如果你用的是-Bash-shell，可以试试看-Git-提供的自动补全脚本" class="headerlink" title="如果你用的是 Bash shell，可以试试看 Git 提供的自动补全脚本"></a>如果你用的是 Bash shell，可以试试看 Git 提供的自动补全脚本</h5><ul>
+<li>git的源代码包里有个自动补全的shell脚本：<br><code>contrib/completion／git-completion.bash</code></li>
+<li>把这个文件保存到<code>~/.git-completion.bash</code>，</li>
+<li>然后在<code>.bash_profile</code>中加入一行<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.git-completion.bash</span><br></pre></td></tr></table></figure></li>
+<li>重启终端即可使用</li>
+</ul>
+<h5 id="也可以为系统上所有用户都设置默认使用此脚本。"><a href="#也可以为系统上所有用户都设置默认使用此脚本。" class="headerlink" title="也可以为系统上所有用户都设置默认使用此脚本。"></a>也可以为系统上所有用户都设置默认使用此脚本。</h5><ul>
+<li>脚本复制到本机<ul>
+<li> Mac <code>/opt/local/etc/bash_completion.d</code> 目录中，</li>
+<li> Linux 复制到 <code>/etc/bash_completion.d/</code> 目录中。</li>
+</ul>
+</li>
+<li> 这两处目录中的脚本，都会在 Bash 启动时自动加载。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%8A%80%E5%B7%A7%E5%92%8C%E7%AA%8D%E9%97%A8">2.7 Git 基础 - 技巧和窍门</a></p>
+<h2 id="设置Git命令别名"><a href="#设置Git命令别名" class="headerlink" title="设置Git命令别名"></a>设置Git命令别名</h2><h5 id="打开-bash-profile-文件"><a href="#打开-bash-profile-文件" class="headerlink" title="打开.bash_profile 文件"></a>打开<code>.bash_profile </code>文件</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi ~/.bash_profile</span><br></pre></td></tr></table></figure>
+
+<h5 id="设置以下别名"><a href="#设置以下别名" class="headerlink" title="设置以下别名"></a>设置以下别名</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> gst=<span class="string">&#x27;git status&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> gcom=<span class="string">&#x27;git commit -m&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> gadd=<span class="string">&#x27;git add .&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> push=<span class="string">&#x27;git push origin&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> pull=<span class="string">&#x27;git pull origin&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> gb=<span class="string">&#x27;git branch&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> gba=<span class="string">&#x27;git branch -a&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> gbd=<span class="string">&#x27;git branch -D&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> glog=<span class="string">&#x27;git log&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> gc=<span class="string">&#x27;git checkout&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> gcb=<span class="string">&#x27;git checkout -b&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> gcf=<span class="string">&#x27;git checkout -f&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<h5 id="也可以设置其他shel命令别名"><a href="#也可以设置其他shel命令别名" class="headerlink" title="也可以设置其他shel命令别名"></a>也可以设置其他shel命令别名</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> pss=<span class="string">&#x27;ps -ef|grep&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> k9=<span class="string">&#x27;kill -9&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> chmod7=<span class="string">&#x27;chmod -R 777&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> grep=<span class="string">&#x27;grep --color&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> ll=<span class="string">&#x27;ls -l&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> rm=<span class="string">&#x27;rm -i&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Div</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.div-wang.com/2017/10/git-shell-skills/">https://blog.div-wang.com/2017/10/git-shell-skills/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.div-wang.com" target="_blank">Div-wang</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/git/">git</a><a class="post-meta__tags" href="/tags/cli/">cli</a><a class="post-meta__tags" href="/tags/shell/">shell</a></div><div class="post_share"><div class="social-share" data-image="https://blog.div-wang.com/static/img/common/bg3.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/10/css-selector-performance/"><img class="prev-cover" src="https://blog.div-wang.com/static/img/common/bg3.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">CSS 选择器性能求解</div></div></a></div><div class="next-post pull-right"><a href="/2017/10/JavaScript-some-of-the-summary/"><img class="next-cover" src="https://blog.div-wang.com/static/img/common/bg3.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">关于JavaScript的一些总结</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2017/12/git-cheat-sheet-cn/" title="Git Cheat Sheet 中文版"><img class="cover" src="https://blog.div-wang.com/static/img/common/bg3.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-12-22</div><div class="title">Git Cheat Sheet 中文版</div></div></a></div><div><a href="/2018/09/build-git-server-using-gogs-docker-image/" title="使用Gogs Docker镜像配置git服务器"><img class="cover" src="https://blog.div-wang.com/static/img/common/bg3.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-09-04</div><div class="title">使用Gogs Docker镜像配置git服务器</div></div></a></div><div><a href="/2017/10/git-commits-merge/" title="git 合并多个 Commit"><img class="cover" src="https://blog.div-wang.com/static/img/git-commits-merge/002.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-10-27</div><div class="title">git 合并多个 Commit</div></div></a></div><div><a href="/2017/10/git-remote-branch/" title="关于Git远程分支和本地分支统一的问题"><img class="cover" src="https://blog.div-wang.com/static/img/common/bg3.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-10-27</div><div class="title">关于Git远程分支和本地分支统一的问题</div></div></a></div><div><a href="/2017/10/use-iterm2/" title="使用iTerm2代替mac默认终端"><img class="cover" src="https://blog.div-wang.com/static/img/common/bg3.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-10-27</div><div class="title">使用iTerm2代替mac默认终端</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#git-shell-%E6%8A%80%E5%B7%A7"><span class="toc-number">1.</span> <span class="toc-text">git shell 技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#git-shell-%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8"><span class="toc-number">1.1.</span> <span class="toc-text">git shell 自动补全</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E4%BD%A0%E7%94%A8%E7%9A%84%E6%98%AF-Bash-shell%EF%BC%8C%E5%8F%AF%E4%BB%A5%E8%AF%95%E8%AF%95%E7%9C%8B-Git-%E6%8F%90%E4%BE%9B%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E8%84%9A%E6%9C%AC"><span class="toc-number">1.1.0.0.1.</span> <span class="toc-text">如果你用的是 Bash shell，可以试试看 Git 提供的自动补全脚本</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B9%9F%E5%8F%AF%E4%BB%A5%E4%B8%BA%E7%B3%BB%E7%BB%9F%E4%B8%8A%E6%89%80%E6%9C%89%E7%94%A8%E6%88%B7%E9%83%BD%E8%AE%BE%E7%BD%AE%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8%E6%AD%A4%E8%84%9A%E6%9C%AC%E3%80%82"><span class="toc-number">1.1.0.0.2.</span> <span class="toc-text">也可以为系统上所有用户都设置默认使用此脚本。</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEGit%E5%91%BD%E4%BB%A4%E5%88%AB%E5%90%8D"><span class="toc-number">1.2.</span> <span class="toc-text">设置Git命令别名</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%89%93%E5%BC%80-bash-profile-%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.0.0.1.</span> <span class="toc-text">打开.bash_profile 文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E4%BB%A5%E4%B8%8B%E5%88%AB%E5%90%8D"><span class="toc-number">1.2.0.0.2.</span> <span class="toc-text">设置以下别名</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B9%9F%E5%8F%AF%E4%BB%A5%E8%AE%BE%E7%BD%AE%E5%85%B6%E4%BB%96shel%E5%91%BD%E4%BB%A4%E5%88%AB%E5%90%8D"><span class="toc-number">1.2.0.0.3.</span> <span class="toc-text">也可以设置其他shel命令别名</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2022 By Div</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="true"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
